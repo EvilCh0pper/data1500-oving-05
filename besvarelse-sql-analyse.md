@@ -7,26 +7,34 @@
 4.  `SELECT Fornavn, Etternavn, Stilling AS Jobbtittel FROM Ansatt;`
 
 1.  **Forklaring:** ...
+   - Velg alle kolonner FRA tabellen vare
 
-2.  **Forklaring:** ...
+2.  **Forklaring:**
+   - Velg kolonnene VNr, Betegnelse fra tabellen vare
 
 3.  **Forklaring:** ...
+   - Velg UNIKE rader fra kolonnen KatNr fra tabellen vare
 
 4.  **Forklaring:** ...
+   - Velg kolonnene fornavn, etternavn og stilling, som omdøpes til jobbtittel, fra tabellen ansatt
 
 ## Oppgave 2: WHERE-klausulen
 1.  `SELECT * FROM Vare WHERE Pris > 500;`
 2.  `SELECT * FROM Ansatt WHERE Stilling = 'Salgssjef' AND Årslønn > 600000;`
 3.  `SELECT Fornavn, Etternavn FROM Kunde WHERE PostNr = '0001' OR PostNr = '0002';`
-4.  `SELECT Betegnelse FROM Vare WHERE NOT KatNr = 1;
+4.  `SELECT Betegnelse FROM Vare WHERE NOT KatNr = 1`;
 
 1.  **Forklaring:** ...
+   - Velg alle rader fra vare-tabellen der verdien til attributtet pris her mer enn 500
 
 2.  **Forklaring:** ...
-
-3.  **Forklaring:** ...
+3. - Velg alle reader fra ansatt-tabellen hvor Stilling-attributtet har verdien 'Salgssjef' og Årslånn-attributtet er mer enn 600000
 
 4.  **Forklaring:** ...
+   - Velg kolonnene Fornavn og Etternavn fra kunde-tabellen hvor PostNr-attributtet har verdien '0001' eller PostNr-attributtet har verdien '0002'
+
+5.  **Forklaring:** ...
+   - Velg betegnelse-kolonnen fra Vare-tabellen hvor attributtet KatNr ikke har verdien '1'
 
 ## Oppgave 3: Gruppering og Sortering
 1.  `SELECT * FROM Vare ORDER BY Pris DESC;`

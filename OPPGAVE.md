@@ -47,7 +47,7 @@ networks:
 
 1.  `SELECT * FROM Vare;`
 2.  `SELECT VNr, Betegnelse FROM Vare;`
-3.  `SELECT DISTINCT KatNr FROM Vare;
+3.  `SELECT DISTINCT KatNr FROM Vare;`
 4.  `SELECT Fornavn, Etternavn, Stilling AS Jobbtittel FROM Ansatt;`
 
 #### Del 2: Lag SQL-spørringer (skriv i `besvarelse.sql`)
