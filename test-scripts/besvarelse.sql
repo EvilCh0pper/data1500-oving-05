@@ -1,4 +1,5 @@
 --  Oppgave 1 Del 2
+-- Kjør med 'docker-compose exec postgres psql -U admin -d hobbyhuset'
 
 -- 1.  Finn alle data om alle kunder. Vis kun de 20 siste fra resultatrelasjonen (tips: bruke delspørring).
 SELECT * FROM kunde LIMIT 20;
@@ -47,14 +48,54 @@ SELECT
 FROM vare
 GROUP BY katnr
 ORDER BY gjennomsnittlig_pris DESC;
+
 -- 3.  Finn den dyreste varen i hver kategori.
+SELECT v.betegnelse, v.pris, k.navn
+FROM vare AS v
+JOIN kategori k ON v.katnr = k.katnr
+WHERE v.pris = (
+    SELECT MAX(v2.pris)
+    FROM vare v2 
+    WHERE v2.katnr = v.katnr
+);
+
 -- 4.  List opp alle stillinger og antall ansatte i hver stilling, sortert synkende etter antall.
--- 5.  Finn totalt antall varer på lager for hver kategori, men vis kun kategorier med mer enn 1000 varer totalt.
+SELECT 
+    stilling, 
+    COUNT(stilling) AS antall -- viktig å talle stilling og ikke * for ekskluderes nullverdier
+FROM ansatt
+GROUP BY stilling
+ORDER BY antall DESC;
+
+-- 5.  Finn totalt antall vnr på lager for hver kategori, men vis kun kategorier med mer enn 1000 varer totalt.
+SELECT 
+    k.navn, 
+    k.katnr, 
+    COUNT(*) AS antall
+FROM kategori k
+JOIN vare v ON k.katnr = v.katnr
+GROUP BY k.navn, k.katnr
+HAVING COUNT(*) > 1000
+ORDER BY antall DESC;
+
 -- 6.  Finn den eldste og yngste ansatte.
+SELECT 
+    CONCAT(fornavn, ' ', etternavn),
+    fødselsdato
+FROM ansatt
+WHERE fødselsdato = (SELECT MAX(fødselsdato) FROM ansatt)
+    OR fødselsdato =  (SELECT MIN(fødselsdato) FROM ansatt);
 
 -- Oppgave 4 Del 2: Lag SQL-spørringer (skriv i `besvarelse.sql`)
 
 -- 1.  Finn navn på alle kunder og poststedet de bor i. Vis kun de første 20 rader fra resultatrelasjon. 
+SELECT 
+    CONCAT(a.fornavn, ' ', a.etternavn),
+    p.poststed
+FROM ansatt a
+JOIN poststed p ON a.postnr = p.postnr
+LIMIT 20;
+    
 -- 2.  Finn navn på alle varer og navnet på kategorien de tilhører. Vis kun de første 20 rader fra resultatrelasjon. 
 -- 3.  Finn alle ordrer med kundenavn og ordredato. Vis kun de første 20 rader fra resultatrelasjon. 
 -- 4.  Finn alle varer som aldri har blitt solgt (dvs. ikke finnes i `Ordrelinje`).
