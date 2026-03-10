@@ -97,19 +97,64 @@ JOIN poststed p ON a.postnr = p.postnr
 LIMIT 20;
     
 -- 2.  Finn navn på alle varer og navnet på kategorien de tilhører. Vis kun de første 20 rader fra resultatrelasjon. 
+SELECT v.*, k.navn AS kategorinavn
+FROM vare v
+JOIN kategori k ON v.katnr = k.katnr
+LIMIT 20;
+
 -- 3.  Finn alle ordrer med kundenavn og ordredato. Vis kun de første 20 rader fra resultatrelasjon. 
+SELECT 
+    CONCAT(k.fornavn, ' ', k.etternavn),
+    o.*
+FROM kunde k
+JOIN ordre o ON k.knr = o.knr
+LIMIT 20;
+
 -- 4.  Finn alle varer som aldri har blitt solgt (dvs. ikke finnes i `Ordrelinje`).
+SELECT v.betegnelse
+FROM vare v
+LEFT JOIN ordrelinje ol ON v.vnr = ol.vnr
+WHERE ol.ordrenr IS NULL;
+
 -- 5.  Finn totalt antall solgte enheter for hver vare (bruk `Ordrelinje`).
+SELECT v.betegnelse, SUM(ol.antall) AS antall_solgte
+FROM vare v
+JOIN ordrelinje ol ON v.vnr = ol.vnr
+GROUP BY v.betegnelse
+ORDER BY antall_solgte DESC;
+
 -- 6.  Finn navnet på alle ansatte som bor i Bø i Telemark.
+SELECT CONCAT(a.fornavn, ' ', a.etternavn) AS navn, ps.poststed
+FROM ansatt a
+JOIN poststed ps ON a.postnr = ps.postnr
+WHERE LOWER(ps.poststed) = 'bø i telemark';
 
 -- Oppgave 5 Del 2: Skriv SQL-spørringer for å hente ut følgende informasjon fra `hobbyhuset`-databasen.
 
 -- 1.  Finn antall ansatte som **ikke** har fått bonus.
+SELECT COUNT(*) AS ikke_bonus
+FROM ansatt
+WHERE bonus IS NULL;
+
 -- 2.  Beregn gjennomsnittlig bonus for alle ansatte, men behandle de som ikke har fått bonus som om de har 0 i bonus.
+SELECT AVG(COALESCE(Bonus, 0)) FROM ansatt; -- COALESCE(gi meg denne verdien, men gi meg 0 istedenfor hvis NULL)
+
 -- 3.  List opp alle kunder som **ikke** har registrert et telefonnummer.
+SELECT *
+FROM kunde
+WHERE telefon IS NULL;
+
 -- 4.  Finn den totale lønnskostnaden (Årslønn + Bonus) for alle ansatte. Pass på at ansatte uten bonus også blir med i den totale summen.
+SELECT SUM(Årslønn + COALESCE(bonus,0)) FROM ansatt;
+
 -- 5.  List opp alle stillinger og antall ansatte i hver stilling som har en bonus registrert.
+SELECT stilling, COUNT(bonus) AS antall_med_bonus
+FROM ansatt
+WHERE bonus IS NOT NULL
+GROUP BY stilling;
+
 -- 6.  Finn den laveste bonusen som er gitt ut (ignorer de som ikke har fått bonus).
+SELECT MIN(bonus) FROM ansatt;
 
 -- Oppgave 6 Del 2
 -- Skriv SQL-spørringer for å hente ut følgende informasjon.
