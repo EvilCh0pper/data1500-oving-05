@@ -160,6 +160,16 @@ SELECT MIN(bonus) FROM ansatt;
 -- Skriv SQL-spørringer for å hente ut følgende informasjon.
 
 -- 1.  Finn alle ordrer som **verken** er bekreftet betalt eller bekreftet ikke-betalt (dvs. de hvor logikken er `UNKNOWN`).
+SELECT *
+FROM ordre
+WHERE erbetalt IS NULL;
+
 -- 2.  List opp alle ansatte som har en bonus som er enten `NULL` eller mindre enn 6000.
+SELECT * 
+FROM ansatt
+WHERE bonus IS NULL OR bonus < 6000;
+
 -- 3.  Finn antall kunder som **ikke** har telefonnummer `41234567` (pass på å inkludere de med `NULL` telefonnummer i tellingen).
--- 4.  List opp alle ordrer som er betalt (`ErBetalt = TRUE`), men hvor `SendtDato` er `NULL`.
+SELECT COUNT(*) 
+FROM kunde
+WHERE COALESCE(telefon, 'n/a') != '41234567';
